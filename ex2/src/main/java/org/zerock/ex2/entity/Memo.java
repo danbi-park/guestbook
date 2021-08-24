@@ -8,12 +8,10 @@ import javax.persistence.*;
 @Table(name = "tbl_memo")
 @ToString
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor//기본 생성자
+@Builder//생성자
+@AllArgsConstructor//매개변수 있는 생성자
+@NoArgsConstructor//매개변수 없는 기본 생성자
 public class Memo {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mno;
