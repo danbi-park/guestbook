@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <h1>chapter 03</h1><hr>
+        <a href="/sample/ex1">/sample/ex1</a><br>
+        <a href="/sample/ex2">/sample/ex2</a><br>
+        <a href="/sample/ex3">/sample/ex3</a><br>
+        <a href="/sample/exInline">/sample/exInline</a><br>
+        <a href="/sample/exLink">/sample/exLink</a><br>
+        <a href="/sample/exLayout1">/sample/exLayout1</a><br>
+        <a href="/sample/exLayout2">/sample/exLayout2</a><br>
+        <a href="/sample/exTemplate">/sample/exTemplate</a><br>
+        <a href="/sample/exSidebar">/sample/exSidebar</a><br>
+    </th:block>
+</th:block>

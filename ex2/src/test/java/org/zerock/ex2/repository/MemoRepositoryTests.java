@@ -33,7 +33,6 @@ public class MemoRepositoryTests {
     });
   }*/
 
-/*
     @Test
     public void testSelect(){
         Long mno = 100L;
@@ -46,7 +45,6 @@ public class MemoRepositoryTests {
             System.out.println("There is no data.");
         }
     }
-*/
 
 /*  @Transactional
   @Test
@@ -63,12 +61,12 @@ public class MemoRepositoryTests {
     System.out.println(memoRepository.save(memo));
   }*/
 
-  /*@Test
+  @Test
   public void testDelete(){
     Long mno = 100L;
     memoRepository.deleteById(mno);
     testSelect();
-  }*/
+  }
 
     /*
           @Test
