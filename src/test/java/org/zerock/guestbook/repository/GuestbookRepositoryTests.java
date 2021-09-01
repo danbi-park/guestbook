@@ -32,7 +32,7 @@ public class GuestbookRepositoryTests {
 
 //    @Test
 //    public void updateTest(){
-//        Optional<Guestbook> result = guestbookRepository.findById(300L);
+//        Optional<Guestbook> result = guestbookRepository.findById(300L); //단일 선택 Optional, 다중 선택 List
 //        if (result.isPresent()){
 //            Guestbook guestbook = result.get();
 //            guestbook.changeTitle("Changed Title...");
@@ -57,22 +57,20 @@ public class GuestbookRepositoryTests {
 //    }
 
 //다중 항목 검색
-    @Test
-    public void testQuery(){
-        Pageable pageable = PageRequest.of(0,10, Sort.by("gno").descending());
-        QGuestbook qGuestbook = QGuestbook.guestbook;
-        String keyword = "1";
-        BooleanBuilder builder = new BooleanBuilder();
-        BooleanExpression exTitle = qGuestbook.title.contains(keyword);
-        BooleanExpression exContent = qGuestbook.content.contains(keyword);
-        BooleanExpression exAll = exTitle.or(exContent);
-        builder.and(exAll);
-        builder.and(qGuestbook.gno.gt(0L));
-        Page<Guestbook> result = guestbookRepository.findAll(builder, pageable);
-        result.stream().forEach(guestbook -> {
-            System.out.println(guestbook);
-        });
-    }
-
-
+//    @Test
+//    public void testQuery(){
+//        Pageable pageable = PageRequest.of(0,10, Sort.by("gno").descending());
+//        QGuestbook qGuestbook = QGuestbook.guestbook;
+//        String keyword = "1";
+//        BooleanBuilder builder = new BooleanBuilder();
+//        BooleanExpression exTitle = qGuestbook.title.contains(keyword);
+//        BooleanExpression exContent = qGuestbook.content.contains(keyword);
+//        BooleanExpression exAll = exTitle.or(exContent);
+//        builder.and(exAll);
+//        builder.and(qGuestbook.gno.gt(0L));
+//        Page<Guestbook> result = guestbookRepository.findAll(builder, pageable);
+//        result.stream().forEach(guestbook -> {
+//            System.out.println(guestbook);
+//        });
+//    }
 }
