@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
     <th:block th:fragment="content">
-        <h1 class="mt-4">GuestBook List Page</h1>
+        <h1 class="mt-4">GuestBook List Page
+            <a th:href="@{/guestbook/register}">
+                <button class="btn btn-outline-primary">게시글 등록</button>
+            </a>
+        </h1>
         <table class="table table-striped">
             <thead>
             <tr>
-                <th scope="col">#</th>
                 <th scope="col">Gno</th>
                 <th scope="col">Title</th>
+                <th scope="col">Writer</th>
                 <th scope="col">Regdate</th>
             </tr>
             </thead>
+
             <tbody>
-            <tr th:each="dto : ${result.dtoList}">
+            <tr th:each="dto : ${result.dtoList}" class="tr-list"
+                th:onclick="|javascript:read('${dto.gno}','${result.page}')|">
                 <th scope="row">[[${dto.gno}]]</th>
                 <td>[[${dto.title}]]</td>
                 <td>[[${dto.writer}]]</td>
                 <td>[[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</td>
             </tr>
             </tbody>
-            <!--            @{ } Context-relative URLs-->
-            <!--            - 컨텍스트 루트와 관련된 URL-->
-            <!--            ~{ }  Server-relative URLs-->
-            <!--            - 서버와 관련된 URL(직접 리소스 접근가능)-->
         </table>
+
         <ul class="pagination h-100 justify-content-center align-items-center">
             <li class="page-item" th:if="${result.prev}">
                 <a class="page-link" th:href="@{/guestbook/list(page=${result.start - 1})}" tabindex="-1">Previous</a>
@@ -45,32 +49,40 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <h5 class="modal-title">되었습니다.</h5>
+                        <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"/>
                     </div>
                     <div class="modal-body">
-                        <p>Modal body text goes here.</p>
+                        <p id="modalMsg"> 번 글이 <span class="modal-title"></span>되었습니다.</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
                     </div>
                 </div>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+                integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+                crossorigin="anonymous"></script>
+
         <script th:inline="javascript">
             var msg = [[${msg}]];
             console.log(msg);
             if(msg){
+                $('#modalMsg').prepend(msg);
+                $('.modal-title').prepend([[${noti}]]);
                 $(".modal").modal();
-                }
+            }
+            function read(gno, page){
+            /*[+
+            var urlword = [[@{/guestbook/read}]] + "?gno=" +gno + "&page=" + page;
+            +]*/
+            location.href=urlword;
+            }
         </script>
     </th:block>
 </th:block>
-</html>

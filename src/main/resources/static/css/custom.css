@@ -1,0 +1,8 @@
+.tr-list{
+    cursor: pointer;
+}
+.tr-list:hover{
+    background: #c2ebfc;
+}
+
+a {text-decoration:none;}
