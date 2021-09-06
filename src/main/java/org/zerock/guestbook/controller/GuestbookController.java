@@ -62,22 +62,31 @@ public class GuestbookController {
     @PostMapping("/modify")
     public String modify(GuestbookDTO dto, RedirectAttributes redirectAttributes,
                          @ModelAttribute("requestDTO") PageRequestDTO requestDTO){
+        log.info("post modify.............................");
+        log.info("dto: " + dto);
         service.modify(dto); //save되서 덮어씀
         redirectAttributes.addAttribute("page", requestDTO.getPage());
+        redirectAttributes.addAttribute("type", requestDTO.getType());
+        redirectAttributes.addAttribute("keyword", requestDTO.getKeyword());
         redirectAttributes.addAttribute("gno", dto.getGno()); //글번호도 넘겨줌, flash 안씀
 
         return "redirect:/guestbook/read";
     }
 
     @PostMapping("/remove")                             //only one time
-    public String remove(Long gno, RedirectAttributes redirectAttributes) {
+    public String remove(Long gno, RedirectAttributes redirectAttributes,
+                         PageRequestDTO pageRequestDTO) {
         service.remove(gno);
         redirectAttributes.addFlashAttribute("msg",gno);
         redirectAttributes.addFlashAttribute("noti","삭제");
+
+//      추가
+        redirectAttributes.addAttribute("page", pageRequestDTO.getPage());
+        redirectAttributes.addAttribute("type", pageRequestDTO.getType());
+        redirectAttributes.addAttribute("keyword", pageRequestDTO.getKeyword());
+
         return "redirect:/guestbook/list";
     }
-
-
 
 }
 

@@ -2,13 +2,16 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
   <th:block th:fragment="content">
+    <h1 class="mt-4">Guestbook Modify Page</h1>
     <form action="/guestbook/modify" method="post">
-      <input type="hidden" th:value="${requestDTO.page}" name="page" />
-      <h1 class="mt-4">Guestbook Modify Page</h1>
+      <!--페이지번호-->
+      <input type="hidden" name="page" th:value="${requestDTO.page}" />
+      <input type="hidden" name="type" th:value="${requestDTO.type}" />
+      <input type="hidden" name="keyword" th:value="${requestDTO.keyword}" />
+
       <div class="form-group">
         <label>글번호</label> <!-- 글번호는 pk이기 때문에 수정 불가능 -->
-        <input type="text" class="form-control" name="gno" th:value="${dto.gno}"
-               readonly>
+        <input type="text" class="form-control" name="gno" th:value="${dto.gno}" readonly>
       </div>
       <div class="form-group">
         <label>제목</label>
@@ -60,9 +63,16 @@
         actionForm.attr("action", "/guestbook/modify").attr("method","post").submit();
       });
       $(".listBtn").click(function(){
-        var pageInfo = $("input[name='page']"); //속성 선택자 (name ="")
-        actionForm.empty; // page를 제외한 나머지 내용들 필요없음(value가 아님)
-        actionForm.append(pageInfo); //페이지만 넘김
+        //var pageInfo = $("input[name='page']"); //속성 선택자 (name ="")
+        var page = $("input[name='page']");
+        var type = $("input[name='type']");
+        var keyword = $("input[name='keyword']");
+        actionForm.empty; // page를 제외한 나머지 내용들 지움, 필요없음(value가 아님)
+
+        actionForm.append(page);
+        actionForm.append(type);
+        actionForm.append(keyword);
+
         actionForm.attr("action", "/guestbook/list").attr("method","get").submit();
         });
     </script>

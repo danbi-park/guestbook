@@ -8,6 +8,26 @@
                 <button class="btn btn-outline-primary">게시글 등록</button>
             </a>
         </h1>
+        <form action="/guestbook/list" method="get" id="searchForm">
+            <div class="input-group">
+                <input type="hidden" name="page" value="1">
+                <div class="input-group-prepend">
+                    <select class="custom-select" name="type">
+                        <option th:selected="${pageRequestDTO.type == null}">--------</option>
+                        <option value="t" th:selected="${pageRequestDTO.type == 't'}">제목</option>
+                        <option value="c" th:selected="${pageRequestDTO.type == 'c'}">내용</option>
+                        <option value="w" th:selected="${pageRequestDTO.type == 'w'}">작성자</option>
+                        <option value="tc" th:selected="${pageRequestDTO.type == 'tc'}">제목 + 내용</option>
+                        <option value="tcw" th:selected="${pageRequestDTO.type == 'tcw'}">제목 + 내용 + 작성자</option>
+                    </select>
+                </div>
+                <input class="form-control" id="teduri" name="keyword" th:value="${pageRequestDTO.keyword}">
+                <div class="input-group-append" id="button-addon4">
+                    <button class="btn btn-outline-secondary btn-search" type="button">Search</button>
+                    <button class="btn btn-outline-secondary btn-clear" type="button">Clear</button>
+                </div>
+            </div>
+        </form>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -20,7 +40,9 @@
 
             <tbody>
             <tr th:each="dto : ${result.dtoList}" class="tr-list"
-                th:onclick="|javascript:read('${dto.gno}','${result.page}')|">
+                th:data-type="${pageRequestDTO.type}" th:data-keyword="${pageRequestDTO.keyword}"
+                th:onclick=
+                    "|javascript:read('${dto.gno}','${result.page}', this.getAttribute('data-type'),this.getAttribute('data-keyword'))|">
                 <th scope="row">[[${dto.gno}]]</th>
                 <td>[[${dto.title}]]</td>
                 <td>[[${dto.writer}]]</td>
@@ -29,22 +51,29 @@
             </tbody>
         </table>
 
+
+<!--    페이지 번호     -->
         <ul class="pagination h-100 justify-content-center align-items-center">
             <li class="page-item" th:if="${result.prev}">
-                <a class="page-link" th:href="@{/guestbook/list(page=${result.start - 1})}" tabindex="-1">Previous</a>
+                <a class="page-link" th:href="@{/guestbook/list(page=${result.start - 1},
+                type=${pageRequestDTO.type},
+                keyword = ${pageRequestDTO.keyword} ) }" tabindex="-1">Previous</a>
             </li>
 
             <li th:class=" 'page-item '+ ${result.page == page?'active':''} "
                 th:each="page: ${result.pageList}">
-                <a class="page-link" th:href="@{/guestbook/list(page = ${page})}">
+                <a class="page-link" th:href="@{/guestbook/list(page = ${page}, type=${pageRequestDTO.type},
+                keyword = ${pageRequestDTO.keyword})}">
                     [[${page}]]
                 </a>
             </li>
 
             <li class="page-item" th:if="${result.next}">
-                <a class="page-link" th:href="@{/guestbook/list(page= ${result.end + 1})}">Next</a>
+                <a class="page-link" th:href="@{/guestbook/list(page= ${result.end + 1}, type=${pageRequestDTO.type}
+                , keyword = ${pageRequestDTO.keyword} )}">Next</a>
             </li>
         </ul>
+<!--    모달 창     -->
         <div class="modal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -63,6 +92,7 @@
             </div>
         </div>
 
+<!--   스크립트    -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"
                 integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
@@ -77,12 +107,23 @@
                 $('.modal-title').prepend([[${noti}]]);
                 $(".modal").modal();
             }
-            function read(gno, page){
+            function read(gno, page, type, keyword){
             /*[+
-            var urlword = [[@{/guestbook/read}]] + "?gno=" +gno + "&page=" + page;
+            var urlword = [[@{/guestbook/read}]] +
+                "?gno=" +gno + "&page=" + page + "&type=" + type + "&keyword=" + keyword;
             +]*/
             location.href=urlword;
             }
+
+            var searchForm = $("#searchForm");
+            $('.btn-search').click(function(e){
+                var selVal = $('.custom-select').val();
+                $('.custom-select').val((selVal=="-------")?"":selVal);
+                searchForm.submit();
+            });
+            $('.btn-clear').click(function(e){
+                searchForm.empty().submit();
+            });
         </script>
     </th:block>
 </th:block>
